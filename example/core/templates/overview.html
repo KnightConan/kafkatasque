@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Overview</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<a class="btn btn-danger" href="/new_task/">create new task with process function</a>
+<a class="btn btn-default" href="/new_simple_task/">create new task without process function</a>
+<div class="row">
+<div class="panel panel-default col-md-offset-1 col-md-10">
+  <div class="page-header">
+    Tasks
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">status</th>
+          <th scope="col">created_at</th>
+          <th scope="col">job_id</th>
+          <th scope="col">job_topic</th>
+          <th scope="col">job_key</th>
+          <th scope="col">job_value</th>
+          <th scope="col">job_partition</th>
+          <th scope="col">result</th>
+          <th scope="col">actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for task in tasks %}
+        <tr>
+          <td>{{task.id}}</td>
+          <td>{{task.status}}</td>
+          <td>{{task.created_at}}</td>
+          <td>{{task.job_id}}</td>
+          <td>{{task.job_topic}}</td>
+          <td>{{task.job_key}}</td>
+          <td>{{task.job_value}}</td>
+          <td>{{task.job_partition}}</td>
+          <td>{{task.result}}</td>
+          <td>
+          {% if task.status.name in ('waiting', 'postponed')%}
+            <a class="btn btn-info btn-xs" href="{{ url_for('news.postpone_task', task_id=task.id) }}" data-toggle="tooltip" title="" data-original-title="Postpone">Postpone</a>
+            <a class="btn btn-info btn-xs" href="{{ url_for('news.cancel_task', task_id=task.id) }}" data-toggle="tooltip" title="" data-original-title="Cancel">Cancel</a>
+          {% elif task.status.name != 'active' %}
+            <a class="btn btn-info btn-xs" href="{{ url_for('news.repeat_task', task_id=task.id) }}" data-toggle="tooltip" title="" data-original-title="Repeat">Repeat</a>
+          {% endif %}
+          </td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+name: Unittests
+on: [push]
+
+jobs:
+  build:
+    name: tests
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python environment
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.7
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Run the tests
+        run: |
+          pip install -r requirements.txt
+          pip install -r test-requirements.txt
+          pytest
